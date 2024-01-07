@@ -7,10 +7,15 @@
 
 import SwiftUI
 import SwiftData
+import Combine
+
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject var userVM: UserViewModel
+//    @ObservedObject var userVM: UserViewModel
     @Query private var items: [Item]
+    
 
     var body: some View {
         NavigationSplitView {
@@ -33,10 +38,17 @@ struct ContentView: View {
                         Label("Add Item", systemImage: "plus")
                     }
                 }
+                ToolbarItem {
+                    Button("Fetch", action: fetch)
+                }
             }
         } detail: {
             Text("Select an item")
         }
+    }
+    
+    private func fetch() {
+        userVM.fetch()
     }
 
     private func addItem() {
