@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 
 // ViewMode class associated with User list and user deatil views
@@ -18,6 +19,7 @@ class UserViewModel: ObservableObject {
     @Published var userList: [User] = []
     @Published var selectedUser: User = User()
     @Published var name: String?
+    @Published var avatar_url: String?
     @Published var followers: Int?
     @Published var following: Int?
     @Published var repoList: [Repo] = []
@@ -46,9 +48,9 @@ class UserViewModel: ObservableObject {
                 case .failure(let error):
                     print("Oh noes! Error: \(error.localizedDescription)")
                 }
-            }, receiveValue: { (users: [User]) in
+            }, receiveValue: { [self] (users: [User]) in
                 print(users)
-                self.userList = users
+                userList = users
             })
             .store(in: &subscriptions)
     }
@@ -79,6 +81,7 @@ class UserViewModel: ObservableObject {
                 }
             }, receiveValue: { [self] (user: User) in
                 name = user.name
+                avatar_url = user.avatar_url
                 followers = user.followers
                 following = user.following
             })

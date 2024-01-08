@@ -15,12 +15,24 @@ struct UserDetailView: View {
     
     var body: some View {
         VStack {
-            Text(username)
-            Text(userVM.name ?? "not found")
-            Text("\(userVM.followers ?? 0)")
-            Text("\(userVM.following ?? 0)")
-            Text("Repositories")
-                .font(.title)
+            HStack {
+                if let avatarURL = userVM.avatar_url {
+                    AsyncImage(url: URL(string: avatarURL)) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(width: 100, height: 100)
+                    .clipShape(.circle)
+                }
+                VStack(alignment: .leading) {
+                    Text(username)
+                    Text(userVM.name ?? "not found")
+                    Text("Followers: \(userVM.followers ?? 0)")
+                    Text("Following: \(userVM.following ?? 0)")
+                }
+            }
+            
             List {
                 ForEach(userVM.repoList) { repo in
                     if let name = repo.name {
@@ -41,6 +53,7 @@ struct UserDetailView: View {
                                 }
                                 
                                 Text("Language: \(repo.language ?? "not found")")
+                                Text("\(repo.description ?? "not found")")
                             }
                         }
                         .buttonStyle(.plain)
@@ -65,6 +78,7 @@ struct UserDetailView: View {
             userVM.name = nil
             userVM.followers = nil
             userVM.following = nil
+            userVM.avatar_url = nil
     })
     }
     
