@@ -35,7 +35,7 @@ struct UserDetailView: View {
             
             List {
                 ForEach(userVM.repoList) { repo in
-                    if let name = repo.name {
+                    if let name = repo.name, !(repo.fork ?? false) {
                         Button(action: {
                             if let url = repo.html_url, let webpage = URL(string: url) {
                                 userVM.repoLink = webpage

@@ -15,7 +15,7 @@ struct GithubViewerApp: App {
     
     init() {
         userVM = UserViewModel()
-//        userVM.fetch()
+        userVM.fetch()
     }
     
     var body: some Scene {
