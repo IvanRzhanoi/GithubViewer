@@ -8,10 +8,14 @@
 import Foundation
 
 
-struct Repo: Decodable {
+struct Repo: Decodable, Identifiable {
     var name: String?
+    var id: Int?
+    var fork: Bool?
     var developmentLanguage: String?
-    var stars: Int?
+    var stargazers_count: Int?
     var description: String?
+    var html_url: String?
+    var language: String?
 }
 

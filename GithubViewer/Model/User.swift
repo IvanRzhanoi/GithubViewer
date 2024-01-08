@@ -8,12 +8,13 @@
 import Foundation
 
 
-struct User: Decodable {
+struct User: Decodable, Identifiable {
     var login: String?
+    var id: Int?
     var avatar_url: String?
     
     // For detailed user screen
-    var fullName: String?
-    var followers: String?
-    var followees: String?
+    var name: String?
+    var followers: Int?
+    var following: Int?
 }
