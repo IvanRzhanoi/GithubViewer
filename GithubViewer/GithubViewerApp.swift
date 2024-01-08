@@ -10,24 +10,18 @@ import SwiftData
 
 @main
 struct GithubViewerApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    
+    var userVM: UserViewModel
+    
+    init() {
+        userVM = UserViewModel()
+//        userVM.fetch()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(UserViewModel())
+                .environmentObject(userVM)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

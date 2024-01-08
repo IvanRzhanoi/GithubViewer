@@ -13,7 +13,6 @@ import Combine
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var userVM: UserViewModel
-    @Query private var items: [Item]
     
 
     var body: some View {
@@ -47,18 +46,11 @@ struct ContentView: View {
                 }
             }
             .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    EditButton()
-//                }
-//                ToolbarItem {
-//                    Button(action: addItem) {
-//                        Label("Add Item", systemImage: "plus")
-//                    }
-//                }
                 ToolbarItem {
-                    Button("Fetch", action: fetch)
+                    Button("Fetch again", action: fetch)
                 }
             }
+            .navigationTitle("Github User Viewer")
         } detail: {
             Text("Select an item")
         }
@@ -67,25 +59,9 @@ struct ContentView: View {
     private func fetch() {
         userVM.fetch()
     }
-
-//    private func addItem() {
-//        withAnimation {
-//            let newItem = Item(timestamp: Date())
-//            modelContext.insert(newItem)
-//        }
-//    }
-//
-//    private func deleteItems(offsets: IndexSet) {
-//        withAnimation {
-//            for index in offsets {
-//                modelContext.delete(items[index])
-//            }
-//        }
-//    }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
         .environmentObject(UserViewModel())
 }
