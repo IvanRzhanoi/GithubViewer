@@ -8,6 +8,7 @@
 import Foundation
 
 
+// Model for each Repo that user has. User has many repos
 struct Repo: Decodable, Identifiable {
     var name: String?
     var id: Int?

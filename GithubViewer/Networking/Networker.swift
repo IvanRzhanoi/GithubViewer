@@ -21,10 +21,11 @@ final class Networker {
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(Constants.token)", forHTTPHeaderField: "Authorization")
         
-        
+        // Returning network publisher that will give us response
         return URLSession.DataTaskPublisher(request: request, session: .shared)
             .tryMap { data, response in
                 
+                // Try getting the response
                 guard let httpResponse = response as? HTTPURLResponse else {
                     print("Error httpResponse: \(response)")
                     throw APIError.unknown
@@ -35,10 +36,11 @@ final class Networker {
                     throw APIError.unknown
                 }
                 
+                // If no issues, we return data
                 return data
             }
-            // If we get error, we need to map it for clarity
             .mapError { error in
+                // If we get error, we need to map it for clarity
                 if let error = error as? APIError {
                     return error
                 } else {
@@ -50,6 +52,9 @@ final class Networker {
     
     
     // It's nearly identical in call, but it allows us to decode an item
+    // Allows to use , receiveValue: { (objectName: [ObjectType]) in
+    // Instead of , receiveValue: { data in
+    // Gives us decoded object
     func makeRequest<T: Decodable>(request: URLRequest) -> AnyPublisher<T, APIError> {
         makeRequest(request: request)
             .decode(type: T.self, decoder: decoder)

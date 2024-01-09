@@ -9,6 +9,7 @@ import SwiftUI
 import Foundation
 
 
+// Information for our wonderfu user. We fetch many users
 struct User: Decodable, Identifiable {
     var login: String?
     var id: Int?

@@ -15,6 +15,7 @@ struct UserDetailView: View {
     
     var body: some View {
         VStack {
+            // User Info
             HStack {
                 if let avatarURL = userVM.avatar_url {
                     AsyncImage(url: URL(string: avatarURL)) { image in
@@ -33,11 +34,15 @@ struct UserDetailView: View {
                 }
             }
             
+            // List of user repos
             List {
                 ForEach(userVM.repoList) { repo in
+                    // We only list repos if they have name and are NOT a fork another
                     if let name = repo.name, !(repo.fork ?? false) {
                         Button(action: {
+                            // Trying to open the page in WebView
                             if let url = repo.html_url, let webpage = URL(string: url) {
+                                // Won't be called unless we have proper URL
                                 userVM.repoLink = webpage
                                 isPresentWebView = true
                             }
@@ -63,8 +68,8 @@ struct UserDetailView: View {
         }
         .sheet(isPresented: $isPresentWebView) {
             NavigationStack {
-                // 3
-                WebView(url: userVM.repoLink) // Won't be called unless we have proper URL
+                // Custom element unitilizing WebView
+                WebView(url: userVM.repoLink)
                     .ignoresSafeArea()
                     .navigationTitle("Github")
                     .navigationBarTitleDisplayMode(.inline)
@@ -75,10 +80,12 @@ struct UserDetailView: View {
             userVM.getUserRepos(username: username)
         })
         .onDisappear(perform: {
+            // Emptying values in case next time they won't load for another user
             userVM.name = nil
             userVM.followers = nil
             userVM.following = nil
             userVM.avatar_url = nil
+            userVM.repoList = []
     })
     }
     

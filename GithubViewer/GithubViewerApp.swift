@@ -15,7 +15,8 @@ struct GithubViewerApp: App {
     
     init() {
         userVM = UserViewModel()
-        userVM.fetch()
+        // By the time app user reaches the main screen, the app will already be in the process of fetching information
+        userVM.fetchUsers()
     }
     
     var body: some Scene {
